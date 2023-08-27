@@ -1,5 +1,6 @@
 package Projects;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
 import static java.lang.Math.PI;
@@ -11,12 +12,18 @@ public class AngleTrigonometricValues {
         double angle = Double.parseDouble(sc.nextLine());
         double sin;
         double cos;
-        double tan;
+        Serializable tan;
 
         sin = getAngleSin(angle);
         sin = roundNumber(sin, 3);
+        cos = getAngleCos(angle);
+        cos = roundNumber(cos, 3);
         System.out.println("Result: ");
         System.out.println("sin("+angle+")= " + sin);
+        System.out.println("cos("+angle+")= " + cos);
+
+        tan = (Math.abs(cos) < 1e-10 ? "undefined" : roundNumber(sin/cos, 3));
+        System.out.println("tg("+angle+")= " + tan);
     }
 
     static double getAngleSin(double angle){
@@ -38,6 +45,25 @@ public class AngleTrigonometricValues {
         return sin;
     }
 
+    static double getAngleCos(double angle){
+        double angleInRad = degreesToRad(angle);
+        double cos = 0;
+        double a;
+        int b;
+        double c;
+        double d;
+
+        for(int i = 0; i< 15; i++){
+            a = numberPower(-1, i);
+            b = 2 * i;
+            c = factorial(b);
+            d = numberPower(angleInRad, b);
+            cos += a / c * d;
+        }
+
+        return cos;
+    }
+
     static double degreesToRad (double angleInDegrees ){
         double angleInRad;
         // double piNumber = 3.1415927;
@@ -47,10 +73,14 @@ public class AngleTrigonometricValues {
 
     static  double factorial (int number){
         double result = number;
-        for (int i = number; i > 1; i--){
-            result = result * (i-1);
+        if (number == 0) {
+            return 1;
+        } else {
+            for (int i = number; i > 1; i--) {
+                result = result * (i - 1);
+            }
+            return result;
         }
-        return result;
     }
 
     static double numberPower (double number, int power){
@@ -67,7 +97,6 @@ public class AngleTrigonometricValues {
 
     static double roundNumber (double number, int decimal){
         double factor = generateNumberWithZeros(decimal);
-        double roundedNumber;
         return Math.round(number * factor) / factor;
     }
 
@@ -76,9 +105,6 @@ public class AngleTrigonometricValues {
             throw new IllegalArgumentException("Number of zeros must be positive");
         }
 
-        StringBuilder sb = new StringBuilder("1");
-        sb.append("0".repeat(numberOfZeros));
-
-        return Double.parseDouble(sb.toString());
+        return Double.parseDouble("1" + "0".repeat(numberOfZeros));
     }
 }
