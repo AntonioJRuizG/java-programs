@@ -41,8 +41,7 @@ public class AngleTrigonometricValues {
     static double degreesToRad (double angleInDegrees ){
         double angleInRad;
         // double piNumber = 3.1415927;
-        double piNumber = PI;
-        angleInRad = angleInDegrees * piNumber / 180;
+        angleInRad = angleInDegrees * PI / 180;
         return angleInRad;
     }
 
@@ -68,8 +67,8 @@ public class AngleTrigonometricValues {
 
     static double roundNumber (double number, int decimal){
         double factor = generateNumberWithZeros(decimal);
-        double roundedNumber = Math.round(number * factor) / factor;
-        return  roundedNumber;
+        double roundedNumber;
+        return Math.round(number * factor) / factor;
     }
 
     static double generateNumberWithZeros(int numberOfZeros) {
@@ -78,11 +77,8 @@ public class AngleTrigonometricValues {
         }
 
         StringBuilder sb = new StringBuilder("1");
-        for (int i = 0; i < numberOfZeros; i++) {
-            sb.append("0");
-        }
+        sb.append("0".repeat(numberOfZeros));
 
-        double result = Double.parseDouble(sb.toString());
-        return result;
+        return Double.parseDouble(sb.toString());
     }
 }
